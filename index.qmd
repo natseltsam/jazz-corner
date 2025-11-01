@@ -11,4 +11,4 @@ page-layout: full
 title-block-banner: true
 ---
 
-
+Hello and welcome to my blog about the Utah Jazz!

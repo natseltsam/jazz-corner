@@ -1,0 +1,9 @@
+---
+title: "Test"
+author: "Nate"
+date: "2025-10-30"
+categories: [jazz]
+image: "new_jerseys.jpg"
+---
+
+Testing this out.
