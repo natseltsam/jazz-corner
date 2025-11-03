@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://natseltsam.github.io/jazz-corner/posts/welcome/index.html</loc>
-    <lastmod>2025-11-01T00:25:55.361Z</lastmod>
-  </url>
-  <url>
-    <loc>https://natseltsam.github.io/jazz-corner/posts/post-with-code/index.html</loc>
-    <lastmod>2025-11-01T00:25:55.359Z</lastmod>
+    <loc>https://natseltsam.github.io/jazz-corner/posts/test/index.html</loc>
+    <lastmod>2025-11-03T00:18:32.700Z</lastmod>
   </url>
   <url>
     <loc>https://natseltsam.github.io/jazz-corner/about.html</loc>
@@ -15,9 +11,5 @@
   <url>
     <loc>https://natseltsam.github.io/jazz-corner/index.html</loc>
     <lastmod>2025-11-01T00:36:05.915Z</lastmod>
-  </url>
-  <url>
-    <loc>https://natseltsam.github.io/jazz-corner/posts/test/index.html</loc>
-    <lastmod>2025-11-01T00:33:37.244Z</lastmod>
   </url>
 </urlset>
