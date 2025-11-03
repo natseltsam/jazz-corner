@@ -1,9 +1,171 @@
 ---
 title: "Test"
 author: "Nate"
-date: "2025-10-30"
+date: "2025-11-01"
 categories: [jazz]
 image: "new_jerseys.jpg"
+execute:
+    echo: false
+    warning: false
 ---
 
-Testing this out.
+```{r}
+library(tidyverse)
+library(hoopR)
+library(gt)
+
+box_player <- load_nba_player_box()
+
+games_team <- box_player |>
+    filter(season_type == 2) |>
+    group_by(team_id) |>
+    summarize(games_team = n_distinct(game_id))
+
+roster_current <- box_player |>
+    arrange(
+        athlete_id, 
+        desc(game_date)
+    ) |>
+    group_by(athlete_id) |>
+    slice_head(n = 1) |>
+    select(
+        athlete_id, 
+        athlete_display_name, 
+        athlete_headshot_href, 
+        team_id, 
+        team_name,
+        team_logo
+    )
+
+award_threshold = 65/82 # games played ratio for award eligibility
+
+rankings_player <- box_player |>
+    filter(
+        season_type == 2,
+        did_not_play == FALSE
+    ) |>
+    group_by(athlete_id) |>
+    summarize(
+        games = n(),
+        pts = sum(points, na.rm = TRUE),
+        mins = sum(minutes, na.rm = TRUE),
+        .groups = "drop"
+    ) |>
+    left_join(roster_current, by = "athlete_id") |>
+    left_join(games_team, by = "team_id") |>
+    mutate(
+        pts_per_36 = pts / (mins / 36),
+        mins_per_game = mins / games,
+        games_ratio = games / games_team
+    ) |>
+    filter(
+        mins_per_game >= 20,
+        games_ratio >= award_threshold
+    )
+
+rankings_player |>
+    select(
+        athlete_display_name,
+        athlete_headshot_href,
+        team_logo,
+        pts_per_36
+    ) |>
+    arrange(desc(pts_per_36)) |>
+    mutate(rank = row_number()) |>
+    slice_head(n = 10) |>
+    gt(rowname_col = "rank") |>
+    tab_header(
+        title = "Top 10 Players by Points Per 36 Minutes",
+        subtitle = ("Players with 20+ Minutes Per Game")
+    ) |>
+    text_transform(
+        locations = cells_body(columns = athlete_headshot_href),
+        fn = function(x) {
+            web_image(x, height = 50)
+        }
+    ) |>
+    text_transform(
+        locations = cells_body(columns = team_logo),
+        fn = function(x) {
+            web_image(x, height = 50)
+        }
+    ) |>
+    fmt_number(
+        columns = pts_per_36,
+        decimals = 1
+    ) |>
+    data_color(
+        columns = pts_per_36,
+        method = "numeric",
+        palette = c("red", "green"),
+        alpha = 0.25,
+        domain = c(min(rankings_player$pts_per_36), max(rankings_player$pts_per_36))
+    ) |>
+    cols_align(
+        columns = c(rank, athlete_headshot_href, team_logo, pts_per_36),
+        align = "center"
+    ) |>
+    cols_width(
+        c(rank) ~ px(50),
+        c(athlete_headshot_href, team_logo, pts_per_36) ~ px(100),
+    ) |>
+    cols_label(
+        athlete_display_name = "",
+        athlete_headshot_href = "",
+        team_logo = "",
+        pts_per_36 = "Pts Per 36"
+    ) |>
+    tab_style(
+        locations = cells_title(groups = "title"),
+        style = list(
+            cell_text(
+                size = px(24),
+                weight = "bold"
+            )
+        )
+    ) |>
+    tab_style(
+        locations = cells_title(groups = "subtitle"),
+        style = list(
+            cell_text(
+                size = px(12)
+            )
+        )
+    ) |>
+    tab_style(
+        locations = cells_column_labels(),
+        style = list(
+            cell_text(
+                size = px(14),
+                weight = "bold"
+            )
+        )
+    ) |>
+    tab_style(
+        locations = cells_stub(),
+        style = list(
+            cell_text(
+                size = px(18),
+                weight = "bold"
+            )
+        )
+    ) |>
+    tab_style(
+        locations = cells_body(columns = athlete_display_name),
+        style = list(
+            cell_text(
+                size = px(14),
+                weight = "bold"
+            )
+        )
+    ) |>
+    tab_style(
+        locations = cells_body(columns = pts_per_36),
+        style = list(
+            cell_text(
+                size = px(16),
+                weight = "bold"
+            )
+        )
+    )
+```
