@@ -4,7 +4,7 @@ project:
 website:
   title: "jazz-corner"
   navbar:
-    left:
+    right:
       - href: index.qmd
         text: Home
       - about.qmd
@@ -13,7 +13,4 @@ format:
   html:
     theme: cosmo
     css: styles.css
-    toc: true
-
-
-
+    
