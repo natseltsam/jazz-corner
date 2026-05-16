@@ -1,5 +1,10 @@
 ---
 title: "What is the value of a second overall pick?"
+date: "2026-05-16"
+image: "images/lottery.png"
+execute:
+    echo: false
+    warning: false
 ---
 
 About this site
