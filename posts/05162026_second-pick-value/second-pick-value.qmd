@@ -32,4 +32,20 @@ As shown, there are some immediate concerns regarding second overall picks. With
 
 Median win shares do not provide much more optimism. With a median win shares of 18.2, the second overall pick is closer to median value of picks six through 12 than picks in the top five. In fact, the median win shares of the second pick are less than half of the median win shares of the first pick (36.5) and the third pick (42.1).
 
-Keep in mind, these numbers intentionally include all picks since 2000, which includes some recent picks that have not had the chance to reach their full potential. Additionally, average win shares can be skewed by outliers. However, the data clearly provides some signs of truth to the "second pick curse".
+Keep in mind, these numbers include all picks since 2000, which includes some recent picks that have not had the chance to reach their full potential. To account for this, I compared win shares within each draft class and calculated the average "rank" of each pick. The intention here is to compare value within draft classes and control for career length:
+
+<br>
+
+::: {.panel-tabset}
+
+### Average Draft Class Rank
+
+![](images/pick_win_rank.png)
+
+### Median Draft Class Rank
+
+![](images/pick_win_rank_median.png)
+
+:::
+
+The concerning trend continues; the second overall pick has the lowest average and median win share rank of any pick in the top 5. In fact, the average rank of second picks have a median rank of 14, meaning their value amounts to a typical mid-first round pick. This is a far cry from the first and third overall picks, which have average ranks of 6.5 and 6, respectively.

@@ -152,3 +152,109 @@ ggsave(
   width = 18,
   height = 8
 )
+
+# create chart for average rank within draft class
+pick_win_shares_rank <- draft_history |>
+  filter(yrs > 0) |> # remove players who did not play in the NBA
+  group_by(draft_year) |>
+  mutate(win_share_rank = dense_rank(desc(win_shares))) |>
+  ungroup() |>
+  group_by(pick) |>
+  summarise(
+    avg_rank = mean(win_share_rank),
+    med_rank = median(win_share_rank),
+    .groups = "drop"
+  ) |>
+  filter(pick <= 30) |> # just first round
+  mutate(
+    label_avg = round(avg_rank, 1),
+    label_med = round(med_rank, 1),
+    highlight = ifelse(pick == 2, "yes", "no")
+  )
+
+chart_pick_win_rank <- 
+  pick_win_shares_rank |>
+  ggplot(aes(x = as.factor(pick), y = avg_rank)) +
+  geom_col(aes(fill = highlight)) +
+  geom_text(
+    aes(label = label_avg),
+    vjust = -0.5,
+    size = 5,
+    color = "black",
+    fontface = "bold"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "yes" = "#3E2680",
+      "no" = "darkgray"
+    )
+  ) +
+  labs(
+    title = "Average Rank within Draft Class by First-Round Draft Pick",
+    subtitle = "Data from 2000-2025 NBA Drafts",
+    x = "Pick"
+  ) +
+  theme(
+    axis.title.x = element_text(size = 16, face = "bold", margin = margin(t = 15)),
+    axis.title.y = element_blank(),
+    axis.text.x = element_text(size = 14, face = "bold", margin = margin(t = -20)),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    panel.background = element_blank(),
+    plot.title = element_text(size = 20, face = "bold"),
+    plot.subtitle = element_text(size = 14, face = "italic"),
+    plot.title.position = "plot",
+    legend.position = "none",
+    #panel.grid.major.x = element_line(color = "gray", linewidth = 0.5, linetype = "dashed"),
+  )
+
+ggsave(
+  "posts/05162026_second-pick-value/images/pick_win_rank.png",
+  chart_pick_win_rank,
+  width = 18,
+  height = 8
+)
+
+# now do by median
+chart_pick_win_rank_median <- 
+  pick_win_shares_rank |>
+  ggplot(aes(x = as.factor(pick), y = med_rank)) +
+  geom_col(aes(fill = highlight)) +
+  geom_text(
+    aes(label = label_med),
+    vjust = -0.5,
+    size = 5,
+    color = "black",
+    fontface = "bold"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "yes" = "#3E2680",
+      "no" = "darkgray"
+    )
+  ) +
+  labs(
+    title = "Median Rank within Draft Class by First-Round Draft Pick",
+    subtitle = "Data from 2000-2025 NBA Drafts",
+    x = "Pick"
+  ) +
+  theme(
+    axis.title.x = element_text(size = 16, face = "bold", margin = margin(t = 15)),
+    axis.title.y = element_blank(),
+    axis.text.x = element_text(size = 14, face = "bold", margin = margin(t = -20)),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    panel.background = element_blank(),
+    plot.title = element_text(size = 20, face = "bold"),
+    plot.subtitle = element_text(size = 14, face = "italic"),
+    plot.title.position = "plot",
+    legend.position = "none",
+    #panel.grid.major.x = element_line(color = "gray", linewidth = 0.5, linetype = "dashed"),
+  )
+
+ggsave(
+  "posts/05162026_second-pick-value/images/pick_win_rank_median.png",
+  chart_pick_win_rank_median,
+  width = 18,
+  height = 8
+)
