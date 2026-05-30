@@ -1,0 +1,27 @@
+---
+title: "What is the value of a second overall pick?"
+date: "2026-05-16"
+image: "images/lottery.png"
+page-layout: full
+execute:
+    echo: false
+    warning: false
+---
+
+Since landing the second overall pick, there's been a new sense of excitement amongst Jazz fans. Not only will we be adding an elite talent on June 23, but he will be joining an already deep, young, and talented roster. However, the questions remains: what is the true value of a second overall pick and is the "second pick curse" real? Let's take a look at the history of second overall picks to find out.
+
+To get a sense on the value of a second overall pick, I looked at the win shares of all first-round picks since 2000. For a full picture, I looked at average win shares by pick as well as median win shares by pick. The average win shares by pick is a good way to get a sense of the overall value of a pick, while the median win shares by pick is a good way to get a sense of the typical value of a pick:
+
+<br>
+
+::: {.panel-tabset}
+
+### Average Win Shares
+
+![](images/pick_win_shares.png)
+
+### Median Win Shares
+
+![](images/pick_win_shares_median.png)
+
+:::
