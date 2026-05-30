@@ -1,17 +1,10 @@
 [
   {
-    "objectID": "posts/05162026_who-should-we-draft/who-should-we-draft.html",
-    "href": "posts/05162026_who-should-we-draft/who-should-we-draft.html",
-    "title": "Who should the jazz draft?",
+    "objectID": "posts/05162026_second-pick-value/second-pick-value.html",
+    "href": "posts/05162026_second-pick-value/second-pick-value.html",
+    "title": "What is the value of a second overall pick?",
     "section": "",
-    "text": "About this site"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "jazz-corner",
-    "section": "",
-    "text": "Hello and welcome to my blog about the Utah Jazz!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWho should the jazz draft?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat is the value of a second overall pick?\n\n\n\n\n\n\n\n\n\n\n\nMay 16, 2026\n\n\n\n\n\n\nNo matching items"
+    "text": "Since landing the second overall pick, there’s been a new sense of excitement amongst Jazz fans. Not only will we be adding an elite talent on June 23, but he will be joining an already deep, young, and talented roster. However, the questions remains: what is the true value of a second overall pick and is the “second pick curse” real? Let’s take a look at the history of second overall picks to find out.\nTo get a sense on the value of a second overall pick, I looked at the win shares of all first-round picks since 2000. For a full picture, I looked at average win shares by pick as well as median win shares by pick. The average win shares by pick is a good way to get a sense of the overall value of a pick, while the median win shares by pick is a good way to get a sense of the typical value of a pick:\n\n\nAverage Win SharesMedian Win Shares\n\n\n\n\n\n\n\n\n\n\nAs shown, there are some immediate concerns regarding second overall picks. With an average of 31.5 win shares, second overall picks have the lowerst average win shares of any pick in the top 5 and share a near equal average win share with the ninth overall pick. Alarmingly, the average win shares of the second overall pick pale in comparison to the first overall pick (51.9 win shares) and the third overall pick (50.8).\nMedian win shares do not provide much more optimism. With a median win shares of 18.2, the second overall pick is closer to median value of picks six through 12 than picks in the top five. In fact, the median win shares of the second pick are less than half of the median win shares of the first pick (36.5) and the third pick (42.1).\nKeep in mind, these numbers intentionally include all picks since 2000, which includes some recent picks that have not had the chance to reach their full potential. Additionally, average win shares can be skewed by outliers. However, the data clearly provides some signs of truth to the “second pick curse”."
   },
   {
     "objectID": "about.html",
@@ -21,10 +14,10 @@
     "text": "About this site"
   },
   {
-    "objectID": "posts/05162026_second-pick-value/second-pack-value.html",
-    "href": "posts/05162026_second-pick-value/second-pack-value.html",
-    "title": "What is the value of a second overall pick?",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "jazz-corner",
     "section": "",
-    "text": "About this site"
+    "text": "Hello and welcome to my blog about the Utah Jazz!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhat is the value of a second overall pick?\n\n\n\n\n\n\n\n\n\n\n\nMay 30, 2026\n\n\n\n\n\n\nNo matching items"
   }
 ]
