@@ -157,7 +157,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Keep in mind, these numbers include all picks since 2000, which includes some recent picks that have not had the chance to reach their full potential. To account for this, I compared win shares within each draft class and calculated the average “rank” of each pick. The intention here is to compare value within draft classes and control for career length:</p>
 <p><br></p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Average Win Shares</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Median Win Shares</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Average Draft Class Rank</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Median Draft Class Rank</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p><img src="images/pick_win_rank.png" class="img-fluid"></p>
@@ -167,6 +167,11 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+<p>The concerning trend continues; the second overall pick has the lowest average and median win share rank of any pick in the top 5. In fact, the average rank of second picks have a median rank of 14, meaning their value amounts to a typical mid-first round pick. This is a far cry from the first and third overall picks, which have average ranks of 6.5 and 6, respectively.</p>
+<p>Now that we have a sense of the average and median value we are seeing among picks, let’s take a look at the actual picks being made. To get a sense of individual success across picks, I looked at all <strong>lottery</strong> picks from 2000 to 2022. I did not include post-2022 picks to allow for players to make an impact prior to being categorized as a bust. To normalize for career length, each player recieved a “win share per year” score. Using a normal distrution, players who never played in the NBA or had a score 1 z-score below the mean were categorized as “mega busts”, players with a score between 0.5 and 1 z-score below the mean were categorized as “busts”, players with a score between 0.5 z-scores above and below the mean were categorized as “role players”, players with a score between 0.5 and 1 z-score above the mean were categorized as “booms”, and players with a score greater than 1 z-score above the mean were categorized as “mega booms”.</p>
+<p>Below is the distribution of boom, bust, and role players across lottery picks:</p>
+<p><br></p>
+<p><img src="images/chart_boom_bust.png" class="img-fluid"></p>
 
 
 
