@@ -3,6 +3,8 @@ library(tidyverse)
 library(rvest)
 library(scales)
 library(stringi)
+library(gt)
+library(tools)
 
 # load data
 ## function to pull draft tables from bbref
@@ -416,12 +418,163 @@ pick_examples_combined <- bind_rows(
     slice_min(ws_per_year, n = 3, with_ties = FALSE) |>
     mutate(category = "Bottom 3"),
 
-  draft_years |>
+  pick_examples |>
     slice_max(ws_per_year, n = 3, with_ties = FALSE) |>
     mutate(category = "Top 3"),
 
-  draft_years |>
+  pick_examples |>
     slice_min(middle_dist, n = 3, with_ties = FALSE) |>
     mutate(category = "Middle 3")
 ) |>
-  ungroup()
+  ungroup() |>
+  mutate(category = factor(category, levels = c("Top 3", "Middle 3", "Bottom 3")))
+
+headshot_paths <- tibble(
+  path = list.files(
+    "posts/images/headshots",
+    full.names = TRUE
+  )
+) |>
+  mutate(
+    player_id = file_path_sans_ext(basename(path))
+  )
+
+table <- pick_examples_combined |>
+  filter(pick == 2) |>
+  arrange(
+    category,
+    desc(ws_per_year)
+  ) |>
+  left_join(
+    headshot_paths,
+    by = "player_id"
+  ) |>
+  mutate(path = ifelse(is.na(path), "posts/images/headshots/placeholder.jpg", path)) |>
+  select(
+    category,
+    path,
+    player,
+    draft_year,
+    yrs,
+    win_shares,
+    ws_per_year
+  ) |>
+  gt(
+    groupname_col = "category",
+    row_group_as_column = TRUE
+  ) |>
+  text_transform(
+    locations = cells_body(columns = path),
+    fn = function(x) {
+      local_image(x, height = px(75))
+    }
+  ) |>
+  tab_header(
+    title = "Top, Middle, and Bottom 3 Second Overall Picks",
+    subtitle = "Data from 2000-2020 NBA Drafts"
+  ) |>
+  fmt_number(
+    columns = c(win_shares, ws_per_year),
+    decimals = 1
+  ) |>
+  cols_label(
+    path = "",
+    player = "",
+    draft_year = "Draft Year",
+    yrs = "Experience",
+    win_shares = "Total Win Shares",
+    ws_per_year = "Win Shares per Year"
+  ) |>
+  cols_align(
+    align = "center",
+    columns = c(path, draft_year, yrs, win_shares, ws_per_year)
+  ) |>
+  cols_width(
+    category ~ px(100),
+    path ~ px(100),
+    player ~ px(150),
+    draft_year ~ px(75),
+    yrs ~ px(75),
+    win_shares ~ px(100),
+    ws_per_year ~ px(100)
+  ) |>
+  tab_style(
+    style = list(
+      cell_text(
+        weight = "bold",
+        size = px(16),
+        v_align = "middle",
+        align = "center"
+      )
+    ),
+    locations = cells_row_groups()
+  ) |>
+  tab_style(
+    style = list(
+      cell_text(
+        weight = "bold",
+        size = px(12),
+        v_align = "middle"
+      )
+    ),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = list(
+      cell_text(
+        weight = "bold",
+        size = px(15)
+      )
+    ),
+    locations = cells_body()
+  ) |>
+  tab_style(
+    style = list(
+      cell_text(
+        weight = "bold",
+        size = px(20)
+      )
+    ),
+    locations = cells_title(groups = "title")
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(
+        color = "green",
+        alpha = 0.1
+      )
+    ),
+    locations = list(
+      cells_row_groups(groups = "Top 3"),
+      cells_body(rows = category == "Top 3")
+    )
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(
+        color = "yellow",
+        alpha = 0.1
+      )
+    ),
+    locations = list(
+      cells_row_groups(groups = "Middle 3"),
+      cells_body(rows = category == "Middle 3")
+    )
+  ) |>
+  tab_style(
+    style = list(
+      cell_fill(
+        color = "red",
+        alpha = 0.1
+      )
+    ),
+    locations = list(
+      cells_row_groups(groups = "Bottom 3"),
+      cells_body(rows = category == "Bottom 3")
+    )
+  )
+
+gtsave(
+  table,
+  "posts/05162026_second-pick-value/images/table.html"
+)
