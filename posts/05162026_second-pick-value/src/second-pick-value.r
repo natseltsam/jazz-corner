@@ -373,7 +373,7 @@ chart_boom_bust <- boom_bust |>
   ) +
   labs(
     title = "Proportion of Boom and Bust Players by Lottery Pick",
-    subtitle = "Data from 2000-2020 NBA Drafts",
+    subtitle = "Data from 2000-2022 NBA Drafts",
     x = "Pick"
   ) +
   theme(
@@ -439,142 +439,159 @@ headshot_paths <- tibble(
     player_id = file_path_sans_ext(basename(path))
   )
 
-table <- pick_examples_combined |>
-  filter(pick == 2) |>
-  arrange(
-    category,
-    desc(ws_per_year)
-  ) |>
-  left_join(
-    headshot_paths,
-    by = "player_id"
-  ) |>
-  mutate(path = ifelse(is.na(path), "posts/images/headshots/placeholder.jpg", path)) |>
-  select(
-    category,
-    path,
-    player,
-    draft_year,
-    yrs,
-    win_shares,
-    ws_per_year
-  ) |>
-  gt(
-    groupname_col = "category",
-    row_group_as_column = TRUE
-  ) |>
-  text_transform(
-    locations = cells_body(columns = path),
-    fn = function(x) {
-      local_image(x, height = px(75))
-    }
-  ) |>
-  tab_header(
-    title = "Top, Middle, and Bottom 3 Second Overall Picks",
-    subtitle = "Data from 2000-2020 NBA Drafts"
-  ) |>
-  fmt_number(
-    columns = c(win_shares, ws_per_year),
-    decimals = 1
-  ) |>
-  cols_label(
-    path = "",
-    player = "",
-    draft_year = "Draft Year",
-    yrs = "Experience",
-    win_shares = "Total Win Shares",
-    ws_per_year = "Win Shares per Year"
-  ) |>
-  cols_align(
-    align = "center",
-    columns = c(path, draft_year, yrs, win_shares, ws_per_year)
-  ) |>
-  cols_width(
-    category ~ px(100),
-    path ~ px(100),
-    player ~ px(150),
-    draft_year ~ px(75),
-    yrs ~ px(75),
-    win_shares ~ px(100),
-    ws_per_year ~ px(100)
-  ) |>
-  tab_style(
-    style = list(
-      cell_text(
-        weight = "bold",
-        size = px(16),
-        v_align = "middle",
-        align = "center"
+function_ranking_table <- function(pick, title, html) {
+  table <- pick_examples_combined |>
+    filter(pick == {{ pick }}) |>
+    arrange(
+      category,
+      desc(ws_per_year)
+    ) |>
+    left_join(
+      headshot_paths,
+      by = "player_id"
+    ) |>
+    mutate(path = ifelse(is.na(path), "posts/images/headshots/placeholder.jpg", path)) |>
+    select(
+      category,
+      path,
+      player,
+      draft_year,
+      yrs,
+      win_shares,
+      ws_per_year
+    ) |>
+    gt(
+      groupname_col = "category",
+      row_group_as_column = TRUE
+    ) |>
+    text_transform(
+      locations = cells_body(columns = path),
+      fn = function(x) {
+        local_image(x, height = px(75))
+      }
+    ) |>
+    tab_header(
+      title = paste0("Top, Middle, and Bottom 3 ", title, " Overall Picks"),
+      subtitle = "Data from 2000-2022 NBA Drafts"
+    ) |>
+    fmt_number(
+      columns = c(win_shares, ws_per_year),
+      decimals = 1
+    ) |>
+    cols_label(
+      path = "",
+      player = "",
+      draft_year = "Draft Year",
+      yrs = "Experience",
+      win_shares = "Total Win Shares",
+      ws_per_year = "Win Shares per Year"
+    ) |>
+    cols_align(
+      align = "center",
+      columns = c(path, draft_year, yrs, win_shares, ws_per_year)
+    ) |>
+    cols_width(
+      category ~ px(100),
+      path ~ px(100),
+      player ~ px(150),
+      draft_year ~ px(75),
+      yrs ~ px(75),
+      win_shares ~ px(100),
+      ws_per_year ~ px(100)
+    ) |>
+    tab_style(
+      style = list(
+        cell_text(
+          weight = "bold",
+          size = px(16),
+          v_align = "middle",
+          align = "center"
+        )
+      ),
+      locations = cells_row_groups()
+    ) |>
+    tab_style(
+      style = list(
+        cell_text(
+          weight = "bold",
+          size = px(12),
+          v_align = "middle"
+        )
+      ),
+      locations = cells_column_labels()
+    ) |>
+    tab_style(
+      style = list(
+        cell_text(
+          weight = "bold",
+          size = px(15)
+        )
+      ),
+      locations = cells_body()
+    ) |>
+    tab_style(
+      style = list(
+        cell_text(
+          weight = "bold",
+          size = px(20)
+        )
+      ),
+      locations = cells_title(groups = "title")
+    ) |>
+    tab_style(
+      style = list(
+        cell_fill(
+          color = "green",
+          alpha = 0.1
+        )
+      ),
+      locations = list(
+        cells_row_groups(groups = "Top 3"),
+        cells_body(rows = category == "Top 3")
       )
-    ),
-    locations = cells_row_groups()
-  ) |>
-  tab_style(
-    style = list(
-      cell_text(
-        weight = "bold",
-        size = px(12),
-        v_align = "middle"
+    ) |>
+    tab_style(
+      style = list(
+        cell_fill(
+          color = "yellow",
+          alpha = 0.1
+        )
+      ),
+      locations = list(
+        cells_row_groups(groups = "Middle 3"),
+        cells_body(rows = category == "Middle 3")
       )
-    ),
-    locations = cells_column_labels()
-  ) |>
-  tab_style(
-    style = list(
-      cell_text(
-        weight = "bold",
-        size = px(15)
+    ) |>
+    tab_style(
+      style = list(
+        cell_fill(
+          color = "red",
+          alpha = 0.1
+        )
+      ),
+      locations = list(
+        cells_row_groups(groups = "Bottom 3"),
+        cells_body(rows = category == "Bottom 3")
       )
-    ),
-    locations = cells_body()
-  ) |>
-  tab_style(
-    style = list(
-      cell_text(
-        weight = "bold",
-        size = px(20)
-      )
-    ),
-    locations = cells_title(groups = "title")
-  ) |>
-  tab_style(
-    style = list(
-      cell_fill(
-        color = "green",
-        alpha = 0.1
-      )
-    ),
-    locations = list(
-      cells_row_groups(groups = "Top 3"),
-      cells_body(rows = category == "Top 3")
     )
-  ) |>
-  tab_style(
-    style = list(
-      cell_fill(
-        color = "yellow",
-        alpha = 0.1
-      )
-    ),
-    locations = list(
-      cells_row_groups(groups = "Middle 3"),
-      cells_body(rows = category == "Middle 3")
-    )
-  ) |>
-  tab_style(
-    style = list(
-      cell_fill(
-        color = "red",
-        alpha = 0.1
-      )
-    ),
-    locations = list(
-      cells_row_groups(groups = "Bottom 3"),
-      cells_body(rows = category == "Bottom 3")
-    )
-  )
 
-gtsave(
-  table,
-  "posts/05162026_second-pick-value/images/table.html"
-)
+  gtsave(
+    table,
+    paste0("posts/05162026_second-pick-value/images/", html, "_pick_table.html")
+  )
+}
+
+table_first_pick <- function_ranking_table(1, "First", "first")
+table_second_pick <- function_ranking_table(2, "Second", "second")
+table_third_pick <- function_ranking_table(3, "Third", "third")
+table_fourth_pick <- function_ranking_table(4, "Fourth", "fourth")
+table_fifth_pick <- function_ranking_table(5, "Fifth", "fifth")
+table_sixth_pick <- function_ranking_table(6, "Sixth", "sixth")
+table_seventh_pick <- function_ranking_table(7, "Seventh", "seventh")
+table_eighth_pick <- function_ranking_table(8, "Eighth", "eighth")
+table_ninth_pick <- function_ranking_table(9, "Ninth", "ninth")
+table_tenth_pick <- function_ranking_table(10, "Tenth", "tenth")
+table_eleventh_pick <- function_ranking_table(11, "Eleventh", "eleventh")
+table_twelfth_pick <- function_ranking_table(12, "Twelfth", "twelfth")
+table_thirteenth_pick <- function_ranking_table(13, "Thirteenth", "thirteenth")
+table_fourteenth_pick <- function_ranking_table(14, "Fourteenth", "fourteenth")
